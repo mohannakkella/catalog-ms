@@ -2,6 +2,7 @@ package com.ewolff.microservice.catalog;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.contains;
 
 import java.util.Arrays;
 
@@ -72,7 +73,6 @@ public class CatalogWebIntegrationTest {
 		String body = getForMediaType(String.class, MediaType.TEXT_HTML, url);
 
 		assertThat(body, containsString("<form"));
-		assertThat(body, containsString("<div>"));
 	}
 
 	@Test
@@ -81,7 +81,8 @@ public class CatalogWebIntegrationTest {
 		String body = restTemplate.getForObject(url, String.class);
 
 		assertThat(body, containsString("iPod nano"));
-		assertThat(body, containsString("<div"));
+		assertThat(body, containsString("42.0"));
+		assertTrue(!body.contains("Google Pixel"));
 	}
 
 	private <T> T getForMediaType(Class<T> value, MediaType mediaType,
