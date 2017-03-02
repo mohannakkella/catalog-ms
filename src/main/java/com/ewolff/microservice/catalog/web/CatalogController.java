@@ -40,14 +40,14 @@ public class CatalogController {
 	@RequestMapping(value = "/form.html", method = RequestMethod.POST)
 	public ModelAndView post(Item Item) {
 		Item = itemRepository.save(Item);
-		return new ModelAndView("success");
+		return new ModelAndView("itemlist", "items", itemRepository.findAll());
 	}
 
 	@RequestMapping(value = "/{id}.html", method = RequestMethod.PUT)
 	public ModelAndView put(@PathVariable("id") long id, Item item) {
 		item.setId(id);
 		itemRepository.save(item);
-		return new ModelAndView("success");
+		return new ModelAndView("itemlist", "items", itemRepository.findAll());
 	}
 
 	@RequestMapping(value = "/searchForm.html", produces = MediaType.TEXT_HTML_VALUE)
@@ -64,7 +64,7 @@ public class CatalogController {
 	@RequestMapping(value = "/{id}.html", method = RequestMethod.DELETE)
 	public ModelAndView delete(@PathVariable("id") long id) {
 		itemRepository.delete(id);
-		return new ModelAndView("success");
+		return new ModelAndView("itemlist", "items", itemRepository.findAll());
 	}
 
 }

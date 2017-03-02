@@ -1,10 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+	
 	<modelVersion>4.0.0</modelVersion>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>catalog</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+       	<packaging>jar</packaging>
 	<groupId>com.ms-example</groupId>
-		<artifactId>catalog</artifactId>
+
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -16,7 +18,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Brixton.RELEASE</spring-cloud.version>
-		<docker.image.prefix>hrishike</docker.image.prefix>
+		<docker.image.prefix>rohitgkk</docker.image.prefix>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
 	<dependencyManagement>
@@ -46,6 +49,7 @@
 					<baseImage>ewolff/docker-java</baseImage>
 					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
 					<cmd>/usr/bin/java -Xmx400m -Xms400m -jar ${project.build.finalName}.jar</cmd>
+					<entryPoint>/usr/bin/java -Xmx400m -Xms400m -jar ${project.build.finalName}.jar</entryPoint>
 					<resources>
 						<resource>
 							<targetPath>/</targetPath>
@@ -59,23 +63,31 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
-	<profiles>
-		<profile>
-			<id>sonar</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Optional URL to server. Default value is http://localhost:9000 -->
-				<sonar.host.url>
-					http://13.76.243.188:9000/
-				</sonar.host.url>
-			</properties>
-		</profile>
-	</profiles>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url>
+                  http://sonar55.demos.hclets.com
+                </sonar.host.url>
+            </properties>
+        </profile>
+     </profiles>
 
 	<dependencies>
 
@@ -126,11 +138,25 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<scope>runtime</scope>
+		</dependency> -->
+
+	    <dependency>
+	      <groupId>mysql</groupId>
+	      <artifactId>mysql-connector-java</artifactId>
+	    </dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+<!-- 		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <version>1.4.193</version>
 		</dependency>
+ -->
 
 		<dependency>
 			<groupId>commons-lang</groupId>
