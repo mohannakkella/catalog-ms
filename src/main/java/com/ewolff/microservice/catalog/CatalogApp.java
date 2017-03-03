@@ -3,11 +3,18 @@ package com.ewolff.microservice.catalog;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.commons.util.InetUtils;
+import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import com.netflix.appinfo.AmazonInfo;
 
 @ComponentScan
 @EnableAutoConfiguration
@@ -15,6 +22,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CatalogApp {
 
+
+	@Value("${server.port}") 
+	private int port;
+	
+	@Value("${spring.application.name}")
+	private String name;
+	
 	private final ItemRepository itemRepository;
 
 	@Autowired
@@ -22,20 +36,22 @@ public class CatalogApp {
 		this.itemRepository = itemRepository;
 	}
 
-//	@PostConstruct
-//	public void generateTestData() {
-//		itemRepository.save(new Item("iPod", 42.0));
-//		itemRepository.save(new Item("iPod touch", 21.0));
-//		itemRepository.save(new Item("iPod nano", 1.0));
-//		itemRepository.save(new Item("iPhone 6S", 300.0));
-//		itemRepository.save(new Item("iPad 4", 100.0));
-//		itemRepository.save(new Item("iPhone 6s Plus", 450.0));
-//		itemRepository.save(new Item("iPhone 7", 650.0));
-//		itemRepository.save(new Item("Google Pixel", 600.0));
-//	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(CatalogApp.class, args);
 	}
 
+	@Bean
+	@Profile(value="aws")
+    public EurekaInstanceConfigBean eurekaInstanceConfigBean(InetUtils inetUtils) {
+	    EurekaInstanceConfigBean config = new EurekaInstanceConfigBean(inetUtils);
+	    AmazonInfo info = AmazonInfo.Builder.newBuilder().autoBuild(name);
+	    config.setDataCenterInfo(info);
+	    info.getMetadata()
+	            .put(AmazonInfo.MetaDataKey.publicHostname.getName(), info.get(AmazonInfo.MetaDataKey.publicHostname));
+	    config.setHostname(info.get(AmazonInfo.MetaDataKey.publicHostname));
+	    config.setIpAddress(info.get(AmazonInfo.MetaDataKey.publicIpv4));
+	    config.setNonSecurePort(port);
+	    return config;
+	}
+	
 }
