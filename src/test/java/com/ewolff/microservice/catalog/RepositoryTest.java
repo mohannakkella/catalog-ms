@@ -21,7 +21,7 @@ public class RepositoryTest {
 	@Test
 	public void AreAllIPodReturned() {
 
-		assertThat(itemRepository.findByNameContaining("iPod"), hasSize(3));
+		assertThat(itemRepository.findByNameContaining("iPod"), hasSize(2));
 		assertTrue(itemRepository.findByNameContaining("iPod").stream()
 				.anyMatch(s -> s.getName().equals("iPod touch")));
 

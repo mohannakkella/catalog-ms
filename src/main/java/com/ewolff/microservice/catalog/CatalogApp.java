@@ -54,4 +54,12 @@ public class CatalogApp {
 	    return config;
 	}
 	
+	@PostConstruct
+	public void setup(){
+		Item iPod = new Item("iPod nano", 42.0);
+		Item iPodTouch = new Item("iPod touch", 50.0);
+		itemRepository.save(iPod);
+		itemRepository.save(iPodTouch);
+	}
+	
 }

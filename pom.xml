@@ -18,7 +18,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Brixton.RELEASE</spring-cloud.version>
-		<docker.image.prefix>rohitgkk</docker.image.prefix>
+		<docker.image.prefix>hrishi</docker.image.prefix>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
@@ -77,21 +77,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <!-- Optional URL to server. Default value is http://localhost:9000 -->
-                <sonar.host.url>
-                  http://sonar55.demos.hclets.com
-                </sonar.host.url>
-            </properties>
-        </profile>
-     </profiles>
 
 	<dependencies>
 		<dependency>
